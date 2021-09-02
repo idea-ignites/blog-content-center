@@ -3,24 +3,40 @@
 import { readdir } from 'fs/promises';
 import path from 'path';
 import { dirname } from 'path';
-import { mkdir } from 'fs/promises';
+import { rename } from 'fs/promises';
 
 async function main() {
-  const dirNames = await readdir(path.resolve(dirname('.'), 'markdowns'));
-  const markdownSet = new Set(dirNames); 
   const publicDirNames = await readdir(path.resolve(dirname('.'), 'public'));
-  const publicSet = new Set(publicDirNames);
 
-  for (const element of markdownSet) {
-    if (!publicSet.has(element)) {
-      console.log({ left: element, right: '' });
-    }
-  }
+  for (const dirName of publicDirNames) {
+    const fullDirName = path.resolve(dirname('.'), 'public', dirName);
+    readdir(fullDirName)
+      .then((subDirNames) =>
+        subDirNames.map((subDirName) =>
+          path.resolve(dirname('.'), 'public', dirName, subDirName),
+        ),
+      )
+      .then((subDirFullNames) =>
+        subDirFullNames.map((subDirFullName) => path.parse(subDirFullName)),
+      )
+      .then((pathObjs) => {
+        let moved = 0;
+        for (const pathObj of pathObjs) {
+          const fromPath = path.resolve(pathObj.dir, pathObj.base);
+          const toPath = path.resolve(
+            dirname('.'),
+            'markdowns',
+            dirName,
+            'figures',
+            pathObj.base,
+          );
 
-  for (const element of publicSet) {
-    if (!markdownSet.has(element)) {
-      console.log({ left: '', right: element });
-    }
+          rename(fromPath, toPath).then(() => {
+            moved = moved + 1;
+            console.log({ fromPath, toPath, moved });
+          });
+        }
+      });
   }
 }
 
