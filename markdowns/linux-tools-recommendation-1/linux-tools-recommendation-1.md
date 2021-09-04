@@ -54,7 +54,7 @@ cat data.json | jq
 
 那么会有如下效果
 
-![figure](/linux-tools-recommendation-1/jq-effect.png)
+![figure](figures/jq-effect.png)
 
 对于自己写的JSON文本， `jq` 也能检查是否存在语法错误. `jq` 也经常和 `curl` 通过管道连接起来一起使用用来调试 API．
 
@@ -92,7 +92,7 @@ tmux list-sessions
 
 命令来查看有哪些会话，会有类似下面的输出
 
-![figure](/linux-tools-recommendation-1/tmux-list-sessions.png)
+![figure](figures/tmux-list-sessions.png)
 
 如果会话没有指定名字可以通过序号来访问，例如`21`号会话，冒号左边的数字便是会话的序号，如下命令回到 `tmux` 会话命令行
 
@@ -160,9 +160,9 @@ openssl s_time -connect cloudflare.com:443
 
 得出的数据是在给定时间内当前客户端能和网站服务器建立多少个TLS连接，一定程度上反应了网络状况：
 
-![figure](/linux-tools-recommendation-1/client-ssl-to-cloudflare-com-1.png)
+![figure](figures/client-ssl-to-cloudflare-com-1.png)
 
-![figure](/linux-tools-recommendation-1/client-ssl-to-cloudflare-com-2.png)
+![figure](figures/client-ssl-to-cloudflare-com-2.png)
 
 就以上两份测试结果而言我们肯定任务第一台客户端到cloudflare.com的网络状况好一些，TLS握手快一些，而第二台客户端到cloudflare.com的网络状况则差一些.
 
@@ -184,11 +184,11 @@ ssh-keygen -f testkey
 
 来生成一对公私钥，其中 `testkey` 文件是私钥，而`testkey.pub`文件是公钥，可以自己给密钥对别的名．
 
-![figure](/linux-tools-recommendation-1/ssh-key-gen-gen-test-key.png)
+![figure](figures/ssh-key-gen-gen-test-key.png)
 
 然后，`##如果你还没有配置ssh私钥的话##` `可以将` 将私钥文件，这里是 `testkey` 复制到`$HOME/.ssh/id_rsa`，公钥文件复制到`$HOME/.ssh/id_rsa.pub`，
 
-![figure](/linux-tools-recommendation-1/ssk-key-gen-default-key-pair-files.png)
+![figure](figures/ssk-key-gen-default-key-pair-files.png)
 
 并且将`id_rsa.pub`文件上传到服务器上，在服务器上将这个公钥文件`id_rsa.pub`并入`authorized_keys`就可以实现免密登录了
 
@@ -238,7 +238,7 @@ PasswordAuthentication no
 systemctl restart sshd
 ```
 
-![figure](/linux-tools-recommendation-1/disable-ssh-password-login.png)
+![figure](figures/disable-ssh-password-login.png)
 
 就成功禁用密码登录了，在这之后还可以编辑本地的ssh配置文件
 
@@ -795,7 +795,7 @@ man curl
 
 一般来说 `man` 显示的文档比加上`--help`参数运行命令显示出的文档要更加详细.
 
-![figure](/linux-tools-recommendation-1/man-manual-screencut.png)
+![figure](figures/man-manual-screencut.png)
 
 同时注意 `man` 有不同的章节，不同的章节会显示不同的内容，例如
 
@@ -845,7 +845,7 @@ nmap -v -sn 192.168.1.0/24
 nmap -v -sT cloudflare.com
 ```
 
-![figure](/linux-tools-recommendation-1/nmap-scan-cloudflare-for-open-ports.png)
+![figure](figures/nmap-scan-cloudflare-for-open-ports.png)
 
 查看 `nmap` 的一般使用说明
 
@@ -925,7 +925,7 @@ tree -L 2 .
 ls -t . | head -n 10
 ```
 
-![figure](/linux-tools-recommendation-1/ls-newest-files.png)
+![figure](figures/ls-newest-files.png)
 
 在macOS上安装coreutils包后用gdu替代缺乏维护的du，然后我们用gdu打印当前目录下每个目录占用的磁盘空间，交由sort排序
 

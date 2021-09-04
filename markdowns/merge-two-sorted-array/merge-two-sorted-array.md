@@ -93,7 +93,7 @@ public static void MergeByInsert(int[] nums1, int m, int[] nums2, int n)
 
 注意由于是C#语言所以我们省去了一些繁琐的部分只保留了主要逻辑，以下是运行结果：
 
-![figure](/merge-two-sorted-array/merge-two-sorted-array-figures/merge-by-insert.png)
+![figure](figures/merge-two-sorted-array-figures/merge-by-insert.png)
 
 后面会看到这个实现（或者说这种算法）是比较慢的．
 
@@ -172,7 +172,7 @@ public static void MergeByCompareV1(int[] nums1, int m, int[] nums2, int n) {
 
 其中第一段 `while` 是比较和选择，第二段和第三段 `while` 将只有一段被真正执行——是为了将之前没有被选中的元素追加到 `nums3` 中，而最后一段 `while` 是将 `nums3` 复制到 `nums2`．
 
-![figure](/merge-two-sorted-array/merge-two-sorted-array-figures/merge-by-compare-v1.png)
+![figure](figures/merge-two-sorted-array-figures/merge-by-compare-v1.png)
 
 可以看到，这个版本的实现的提交结果显示运行时为304毫秒，相比之前的376毫秒有明显进步。对了，这个算法的时间复杂度是 \\( O(m+n) \\) ，是线性的，比较次数仅取决于两个数组各自元素个数的最小值，剩下的就是元素的直接复制，而总的空间复杂度是 \\( O(m+n) \\) ，包括在运行时我们额外分配的 \\( O(m+n) \\) ．
 
@@ -184,7 +184,7 @@ public static void MergeByCompareV1(int[] nums1, int m, int[] nums2, int n) {
 
 我们知道，`nums1` 有 `m` 个元素，`nums2` 有 `n` 个元素，并且 `nums1` 的数组长度是 `m+n`，多出来 `n` 个位置是为了能够容纳 `nums2`，为了保护程序运行过程中 `nums1` 的元素不被覆写，我们只需将 `nums1` 的元素往右移到尽头就可以了：
 
-![figure](/merge-two-sorted-array/merge-two-sorted-array-figures/shift-nums1.png)
+![figure](figures/merge-two-sorted-array-figures/shift-nums1.png)
 
 将 `nums1` 的所有元素一次性往右边移动 `n` 步（是为了移到尾端）的时间复杂度是 \\( O(m) \\) ：
 
@@ -248,7 +248,7 @@ public static void MergeByCompareV2(int[] nums1, int m, int[] nums2, int n) {
 
 第一段 `for` 循环是移动 `nums1` 中的所有元素到尾端，而第一段 `while` 循环所做的是比较和选择，把较小的元素写入到 `nums1` 中，而最后两段 `while` 循环将只有其中一段被执行，是为了把未被选上的元素追加到 `nums1` 中．运行结果：
 
-![figure](/merge-two-sorted-array/merge-two-sorted-array-figures/merge-by-compare-v2.png)
+![figure](figures/merge-two-sorted-array-figures/merge-by-compare-v2.png)
 
 相比未改进版本304毫秒这次进步了64毫秒，还是有些明显的．总的时间复杂度和空间复杂度与前面的一致．
 
@@ -271,7 +271,7 @@ public static void MergeByConcatAndSort(int[] nums1, int m, int[] nums2, int n) 
 
 运行效果并不是最快的：
 
-![figure](/merge-two-sorted-array/merge-two-sorted-array-figures/merge-by-concat-and-sort.png)
+![figure](figures/merge-two-sorted-array-figures/merge-by-concat-and-sort.png)
 
 但相比插入法和未经过改进的选择比较法都更快．这种方法事实上也是可行的，因为语言标准库/运行时提供的排序方法的实现都是很高效的．假如说用的是快速排序方法作为实现，那么总的时间复杂度将会是 \\( O(n\times \mathop{log}n) \\) ，其中假设 \\( n \geq m \\) ，而空间复杂度是 \\( O(n+m) \\) ．可以认为 \\( O(n \times \mathop{log}n) \\) 是比 \\( O(m+n) \\) 慢的，假设 \\( m \\) 和 \\( n \\) 都大约同为 \\( 1000 \\) ，那么 \\( n\mathop{log}n \approx n \mathop{log} 1000 \approx 3 n \\) ，而  \\( m+n \leq 2n, n \geq m \\) ．
 

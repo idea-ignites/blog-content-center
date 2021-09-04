@@ -40,7 +40,7 @@ ratings.iloc[:, 1].max()
 
 输出：
 
-![figure](/recommender-system-2/2.png)
+![figure](figures/2.png)
 
 userId 和 movieId 是从 1 开始数的，我们把它转变成从 0 开始数的：
 
@@ -80,7 +80,7 @@ ratings = ratings.iloc[random_perm, :]
 
 查看它：
 
-![figure](/recommender-system-2/1.png)
+![figure](figures/1.png)
 
 可以发现应该是被打乱了．
 
@@ -244,7 +244,7 @@ rmse = np.sqrt(np.mean(np.power(estimateds - actuals, 2)))
 
 输出为：
 
-![figure](/recommender-system-2/3.png)
+![figure](figures/3.png)
 
 原数据集中电影的打分是 5 分制，简单交叉验证结果显示，我们的模型在测试集上的 RMSE 约为 1.135，相当于 20\% 的误差．
 
@@ -319,7 +319,7 @@ result[0:10]
 
 输出为：
 
-![figure](/recommender-system-2/4.png)
+![figure](figures/4.png)
 
 构建 movie_id 到 movie_title 的对应关系：
 
@@ -350,7 +350,7 @@ def movie_ids_to_movie_titles(
 
 给用户推荐的电影：
 
-![figure](/recommender-system-2/5.png)
+![figure](figures/5.png)
 
 查看用户本来喜欢的电影：
 
@@ -366,6 +366,6 @@ movie_ids_to_movie_titles(get_highest_ratings(1, rating_matrix, 20), movie_id_to
 
 输出为：
 
-![figure](/recommender-system-2/6.png)
+![figure](figures/6.png)
 
 感觉效果很一般，我们会尝试在下篇文章中做改进．

@@ -19,7 +19,7 @@ https://exploro.one/feed/atom
 
 另外，对于 RSSHub Radar 用户，您也可以通过右上角的 RSSHub Radar 按钮来订阅：
 
-![figure](/rss-subscribe/1.png)
+![figure](figures/1.png)
 
 我们始终感谢您的关注．
 

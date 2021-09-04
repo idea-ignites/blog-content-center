@@ -17,7 +17,7 @@ HTTP 协议被广泛应用，例如这张网页，它实质上是字节的有限
 
 HTTP 协议默认传输的是明文，这意味着浏览器和服务器中间链路上的任何节点，都能看到它们之间的通信．
 
-![figure](/openssl-certificates/xiaoming-login-to-github.png)
+![figure](figures/xiaoming-login-to-github.png)
 
 一些网页应用有「登录」功能，我们不希望传给服务器的用户名和密码被人看到．
 
@@ -118,7 +118,7 @@ Bob收到$[p_x, h_{ex}]$后，要验证 \\( p_x \\) 是不是 \\( p_{\text{david
 
 我知道上面这个过程多少有些抽象，为此，我画了一幅图，描述了签名、递送和验证的过程：
 
-![figure](/openssl-certificates/sign-send-verify.png)
+![figure](figures/sign-send-verify.png)
 
 图中对签名的描绘很好理解，而在验证过程中的第3步， Bob 首先对 `ehashval x` 解密，就相当于签名图示中三角形△所示的步骤，然后对 `data x` 计算散列值，相当于签名图示中圆形○所示的步骤，如果数据在递送中没有被串改，解密 `ehashval x` 得到的 `hashval x` 应该等于由数据 `data x` 算出来的散列值 `hashval d` .
 
@@ -130,7 +130,7 @@ Bob收到$[p_x, h_{ex}]$后，要验证 \\( p_x \\) 是不是 \\( p_{\text{david
 
 网站的内容是以文件的形式存储在服务器中的，浏览器要打开一个网站，就要和提供这个网站的内容的服务器建立连接，譬如说，我想打开 `cloudflare.com` 这个网站，那么
 
-![figure](/openssl-certificates/curl-open-cloudflare-ip.png)
+![figure](figures/curl-open-cloudflare-ip.png)
 
 那么客户端会首先尝试查询 `cloudflare.com` ，也就是网站的域名，所对应的IP地址，这里得到的 `cloudflare.com` 的IP地址是 `104.17.176.85` ，然后客户端才向 `104.17.176.85` 这台服务器请求 `cloudflare.com` 的内．域名 `cloudflare.com` 和IP地址 `104.17.176.85` 的关系，就像是建筑名和详细地址的关系.
 
@@ -138,7 +138,7 @@ Bob收到$[p_x, h_{ex}]$后，要验证 \\( p_x \\) 是不是 \\( p_{\text{david
 
 HTTPS证书是为了防止刚才说的这种事情的发．具体地， HTTPS 协议能够保证：当张三使用 HTTPS 协议打开银行网站 `www.abank.com` ，如果客户端连接到的是骗子的服务器而不是正规的银行网站的服务器，那张三一定会被告． HTTPS 就是那个好心的路人甲，当路人丙告诉张三的是骗子机构而非正规的银行机构时，跳出来揭穿路人丙并提醒张三的路人甲.
 
-![figure](/openssl-certificates/browser-prompt-that-the-website-is-not-safe.png)
+![figure](figures/browser-prompt-that-the-website-is-not-safe.png)
 
 HTTPS协议是怎样做到这一点的？ HTTPS 协议是根据什么来判断：假如说服务器x声称它能够提供网站 domainx.com 的页面，那服务器x是否真的是 domainx.com 的合法内容提供者？
 
@@ -146,7 +146,7 @@ HTTPS协议是怎样做到这一点的？ HTTPS 协议是根据什么来判断�
 
 那为什么我们会提到这个通过权威第三方签名来保证数据完整性的例子？事实上，一个服务器要想向别人证明自己是 ` domainx.com ` 的合法内容提供者，按照我们上面说到的用权威第三方签名来确保数据完整性的例子，它需要有主体是 `domainx.com` 的一对公私钥（ domainx.com 对应 David ），以及 CA 的对 `domainx.com` 的证书（证书可以简单地看做公钥附上一些必要的主体身份信息）的签．浏览器和服务器建立连接，并且浏览器告知服务器要请求的域名（比如说是 domainx.com ），服务器为了证明自身提供相应内容的合法性，会提供相应域名的证书（ domainx.com 的证书），一个证书，你可以看做是一个包含了网站主体信息和站长的公私钥和 CA 的签名的一个文．由于现代操作系统中存储有许多 CA 的公钥，因此操作系统能够验证 CA 对网站证书的签名，而验证了 CA 对网站证书的签名，就等同于验证了网站证书的完整性在递送过程中没有受到影响（未受篡改），由于网站的证书还包含了站长的公钥，因此，浏览器可以拿这个公钥来验证证书上面声称的主体信息（例如证书声称这个证书对应的主体常用名称是 domainx.com ），可以看做是，拿站长的公钥，来验证站长对证书的签名.
 
-![figure](/openssl-certificates/the-chain-of-trust-also-full-chain.png)
+![figure](figures/the-chain-of-trust-also-full-chain.png)
 
 首先用户相信自己的操作系统存储的钥匙环并没有被恶意篡改，然后浏览器会使用操作系统钥匙环中存储着的 CA 的公钥的散列值验证收到的证书中的 CA 公钥的完整性，证明了 CA 公钥的完整性之后，在用 CA 的公钥来验证 CA 的证书的完整性，其中， CA 的证书也含有 CA 的主体信息和 CA 的公钥，在证明了 CA 的证书的完整性之后，再用 CA 的公钥来验证网站证书的完整性，因为网站证书有 CA 的签名，所以可用 CA 的公钥来验证 CA 在网站证书中的签名，然后，证明了网站证书的完整性之后，可以拿网站证书的站长公钥，来验证网站证书的完整性，从而保证网站证书中的网站主体信息没有被篡改，然后浏览器比较网站证书中的主体信息的「常用主体名称」字段和当前请求的域名是否匹配，如果匹配，则整个网站证书验证过程成功完成，即证明浏览器收到了的响应是来自合法的服务器.
 
@@ -168,9 +168,9 @@ CA --- 信任 --> 网站与服务器主体身份一致性
 
 实际生产环境中，验证 HTTPS 证书所涉及到的信任链往往不止2层，可能有3层甚至4层（例如亚马逊 AWS 的网站），更加复杂的情况也有，比如说交叉信任链，但这不在我们的讨论范围内.
 
-![figure](/openssl-certificates/a-trust-chain-of-length-three.png)
+![figure](figures/a-trust-chain-of-length-three.png)
 
-![figure](/openssl-certificates/a-trust-chain-of-length-four.png)
+![figure](figures/a-trust-chain-of-length-four.png)
 
 拥有四层证书信任链的证书一般是颁发给较为复杂且对灵活性和合规性要求较高的业务，最底层的根证书的私钥需要受到极其严密的保护，不过大多数情况，还是三层证书居多，这样可以保证最底层的根证书的私钥极少使用，而要签发网站证书，只要用到二级 CA 的私钥，这里，拿cloudflare.com举例，签发根证书的 CA 叫做DigiCert High Assurance EV Root CA，也叫根 CA ，而二级 CA 叫做DigiCert ECC Extended Validation Server CA，也叫二级 CA 或者服务器 CA ，一般来说根 CA 负责给二级 CA 的证书签名（从而大家得以验证二级 CA 的证书的完整性），而二级证书的 CA 给网站证书签名（从而大家得以验证网站证书的完整性），二级证书的 CA 的私钥会常被用到，而根 CA 的私钥则事实上受到了良好的保护，因为它极少会被访问到和使用到.
 
@@ -260,7 +260,7 @@ Alice在收到 \\( B=10 \\) 这个讯息之后， Alice 会计算 \\( s=B^a \\; 
 
 下表中的每一行对应每一个 DHKE 方法中的每一个过程或者说每一个阶段，各列列出的是参与方（也包括中间人 Mallory ）知道的和不知道的信息.
 
-![figure](/openssl-certificates/dhke-information-table.png)
+![figure](figures/dhke-information-table.png)
 
 值得注意的是，参与方必须要确认对方是对方， Alice 在收到信息之后，必须要确定那是 Bob 发来的，同样 Bob 在收到信息之后，也必须要确定那是 Alice 发来的，否则应当终止 DHKE ，因为在不能够确认对方身份的情况下，有可能是 Mallory 对 Alice 伪装成 Bob ，同时 Mallory 也对 Bob 伪装成 Alice ，这样 DHKE 方法计算出来的 \\( A, B \\) 和 \\( s \\) 实际上也会被 Mallory 截取，这叫做「中间人攻击」， DHKE 方法面临中间人攻击时会变得不再安全.
 
@@ -306,7 +306,7 @@ v2.8.6
 
 接下来我要在哪台服务器申请证书，我就把要申请的证书的域名的唯一一个 A 记录指向哪台服务器，比如说我是在 `172.217.5.78` 这台服务器申请 acme-demo.beyondstars.xyz 这个域名的 TLS 证书，那我就在 DNS 解析商那里把这个 acme-demo.beyondstars.xyz 这个域名的唯一的一条 A 记录指向服务器 `172.217.5.78` ，这里呢 `172.217.5.78` 这个地址是用来举例，你要看你自己的 VPS 服务器也就是你运行 `acme.sh` 程序的那台服务器的IP地址是多少.
 
-![figure](/openssl-certificates/create-a-acme-demo-a-record.png)
+![figure](figures/create-a-acme-demo-a-record.png)
 
 大概过几分钟，我们在自己机器上 `ping` 自己设置的这个域名，以我设置的举例，acme-demo.beyondstars.xyz，如果看到IP地址是刚才自己设置的，那就算是 DNS 解析设置成功了，就可以进入下一步了.
 
@@ -361,7 +361,7 @@ acme.sh --issue \
 
 申请成功后会看到下列提示，主要是提示申请到的证书的位置是在哪儿.
 
-![figure](/openssl-certificates/on-acme-sh-issue-succeed.png)
+![figure](figures/on-acme-sh-issue-succeed.png)
 
 要安装 `acme.sh` 申请到的证书从而立刻给网站启用 HTTPS 服务也很简单，acme.sh要求我们把证书复制到一个单独的目录，而不建议直接使用`$HOME/.acme`作为证书目．首先我们新建一个这样的目录：
 
@@ -1046,7 +1046,7 @@ Let's Encrypt 证书除了可以用 acme.sh 申请，还可以用 certbot 申请
 
 和用 acme.sh 申请证书类似，假如说你在服务器 x 运行 certbot 申请 yoursite.com 的 TLS 证书，那么你要确保 yoursite.com 会被解析到服务器 x，下面我们建立一个域名用于演示如何用certbot申请证书，我们用的是 certbot-demo.beyondstars.xyz 这个域名，假设这个 certbot-demo.beyondstars.xyz 域名所指的网站还没有开通，那同样的也要先建立网站根目录和配置 NginX 服务器
 
-![figure](/openssl-certificates/add-a-new-dns-record-certbot-demo.png)
+![figure](figures/add-a-new-dns-record-certbot-demo.png)
 
 首先建立网站根目录并配置 NginX 服务器：
 
@@ -1100,15 +1100,15 @@ certbot --nginx
 
 会出现对话界面，选择一个要 certbot 帮你申请证书的域名
 
-![figure](/openssl-certificates/run-certbot-in-nginx-mode-1.png)
+![figure](figures/run-certbot-in-nginx-mode-1.png)
 
 这里我们输入数字4，也就是为`certbot-demo.beyondstars.xyz`这个域名申请 TLS 证书，然后按回车继续
 
-![figure](/openssl-certificates/run-certbot-in-nginx-mode-2.png)
+![figure](figures/run-certbot-in-nginx-mode-2.png)
 
 输入数字 2 并按回车，certbot 将修改 NginX 配置文件，使 HTTP 流量自动重定为 HTTPS 流量，这样网站的 HTTPS 就启用了，而选数字 1 我们还要手动配置，这里输入2并按回车就可以了
 
-![figure](/openssl-certificates/run-certbot-in-nginx-mode-3.png)
+![figure](figures/run-certbot-in-nginx-mode-3.png)
 
 出现这个节目提示证书申请成功并且 NginX 的 HTTP 到 HTTPS 的重定向也配置成功.
 
@@ -1346,9 +1346,9 @@ https://github.com/hsiaofongw/openssl-selfsign-ca-demo
 
 同时须知晓较新版本之Google Chrome会将网站显示为不安全，即使在系统中信任了相应地根证书：
 
-![figure](/openssl-certificates/openssl-self-signed-chrome-display-1.png)
+![figure](figures/openssl-self-signed-chrome-display-1.png)
 
-![figure](/openssl-certificates/openssl-self-signed-chrome-display-2.png)
+![figure](figures/openssl-self-signed-chrome-display-2.png)
 
 以上验证是通过在`/etc/hosts`文件中将 `yoursite.com` 指向 `127.0.0.1` 使Chrome访问 `yoursite.com` 时向 `127.0.0.1` 发起请求实现的，也可以通过openssl手动验证证书
 

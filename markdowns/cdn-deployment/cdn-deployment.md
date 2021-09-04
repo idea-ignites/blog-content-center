@@ -25,7 +25,7 @@ categories: ["技术交流"]
 
 CDN的全称呢就是Content Delivery Network，即「内容分发网络」，顾名思义，就是通过网络将内容分发，分发到哪里去呢？回归我们刚才的讨论，当时是希望分发得离用户越近越好，最好是服务器和每个用户的距离（延时）都不那么远，这样用户即使是第一次打开网页，本地没有缓存，要直接请求服务器，也不会费太多时间.
 
-![figure](/cdn-deployment/what-is-cdn-2.gv.svg)
+![figure](figures/what-is-cdn-2.gv.svg)
 
 这样呢，不管用户在哪个大洲，我们都有和用户比较近的服务器，使用户浏览器发出的请求不必跋山涉水大老远地跑到源服务器上，这样就使用户打开网页的时间加快了：通过在用户的家门口假设一些 Edge Server，并且提前把内容分发到这些 Edge Server 上．有了 Edge Server ，用户请求网页时，比如说用的是域名，www.example.com，DNS服务器就根据用户的 IP 地址，判断用户的地理位置，再根据用户的地理位置，返回离用户最近的那个 Edge Server 的 IP 地址，比如说 EdgeServer1 的 IP 地址，然后用户再向 EdgeServer1 这台边沿服务器请求 www.example.com 的内容．这就是CDN工作的大概过程.
 
@@ -151,9 +151,9 @@ function 当有DNS查询请求来临(查询) {
 
 上面这整个过程，画出图形，就是这样子的：
 
-![figure](/cdn-deployment/hongkong-edge-server.jpg)
+![figure](figures/hongkong-edge-server.jpg)
 
-![figure](/cdn-deployment/na-edge-server.jpg)
+![figure](figures/na-edge-server.jpg)
 
 这就完成了对CDN的最基本的工作的方式的介绍.
 
@@ -163,7 +163,7 @@ function 当有DNS查询请求来临(查询) {
 
 用户事实上并不需要关心浏览器到底是向具体哪一个边沿服务器发起请求，只知道，一般都是最近的边沿服务器就够了，那么，从用户的角度上看，所有那么多边沿服务器总是可以抽象成一台抽象的离自己最近的一台抽象的「抽象边沿服务器」或者也叫「最近边沿服务器」，并且最近边沿服务器的地址已知，而真实源站点的地址未知（但是边沿服务器知道或者间接知道源站点的地址）.
 
-![figure](/cdn-deployment/nearest-edge-server.jpg)
+![figure](figures/nearest-edge-server.jpg)
 
 回忆上一节讨论的CDN的最基本工作方式，我们知道，DNS在CDN的工作过程中扮演了一个重要的角色——根据查询的发起地的地理位置返回距离最近的边沿服务器的IP地址．那么总的来说，要在一个已经实现好了的CDN系统上面配置自己的网站，实际上无非主要是两个方面：1）让边沿服务器知道网站的源服务器在哪（用于更新缓存）；2）让DNS服务器知道边沿服务器的地址都有哪些（这样DNS服务器在面临查询时才可以从多个服务器中选位置最近的作为回答）.
 
@@ -181,19 +181,19 @@ Pull CDN的优点是配置简单，只需一次设置源服务器的IP地址，�
 
 首先，打开[CloudCone Cloud Nexus](https://app.cloudcone.com/?ref=4700)，注册了账户之后进入登录页面，在登录页面输入自己注册的CloudCone账户和密码，并单击「Log in」（登录）.
 
-![figure](/cdn-deployment/login-in-to-cloudcone.png)
+![figure](figures/login-in-to-cloudcone.png)
 
 登录之后可以看到控制面板资源总览界面如下：
 
-![figure](/cdn-deployment/cloudcone-control-panel.png)
+![figure](figures/cloudcone-control-panel.png)
 
 可以看到整体上界面看起来还是非常简洁大方非常赏心悦目的．接下来我们单击上面哪一排字当中的「CDN」．进入到CDN Pull Zone设置页面.
 
-![figure](/cdn-deployment/cloudcone-cdn-pull-zone-settings.png)
+![figure](figures/cloudcone-cdn-pull-zone-settings.png)
 
 其中Name和Origin URL字段最好保密，因为从这些信息攻击者有可能能够推断出你的网站的源站点的真实IP地址（而不是边沿服务器的IP地址）．然后我们单击「Add pull zone」按钮，位于「Your pull zones」标题的右边.
 
-![figure](/cdn-deployment/cloudcone-cdn-add-pull-zone.png)
+![figure](figures/cloudcone-cdn-add-pull-zone.png)
 
 第一个选项是协议，建议选择`https://`，现今申请一个可靠的TLS证书并不难，然后我们假设你的博客网站是在
 
@@ -211,11 +211,11 @@ secret-resource-1.yoursite.com
 
 指向你的源站点的真实IP，所以请首先打开CloudFlare DNS，打开之后界面如下所示
 
-![figure](/cdn-deployment/cloudflare-dns-settings.png)
+![figure](figures/cloudflare-dns-settings.png)
 
 点击「+ Add  record」按钮
 
-![figure](/cdn-deployment/cloudflare-dns-settings-add-a-record.png)
+![figure](figures/cloudflare-dns-settings-add-a-record.png)
 
 将其中的`secret-resource-1`替换为你自己设置的字母数字字符串填到Name中，这里我只是做了个演示，然后Type选择A，即A记录，IPv4 address填你的网站的源站点的服务器的IP地址，这里我们假设你的源站点的IP地址是`123.124.125.126`，这个你要看你的网站的源服务器的VPS提供商界面显示的那个IP地址，TTL可以不用设置，即Auto（自动），然后Proxy status下方的云朵☁️建议点灰（否则设置起来还会比较麻烦），点Save保存.
 
@@ -323,7 +323,7 @@ nginx -s reload
 
 接下来回到CloudCone CDN的配置界面，点击「Manage」按钮，再点击「SSL」，配置裸域名的证书：
 
-![figure](/cdn-deployment/cloudcone-ssl-config.png)
+![figure](figures/cloudcone-ssl-config.png)
 
 其中Hostname就填自己的博客的域名，比如说你的是
 
@@ -386,17 +386,17 @@ create a CNAME record to xxx.worldcdn.net
 
 这样的说明
 
-![figure](/cdn-deployment/cloudcone-get-edge-server-domain.png)
+![figure](figures/cloudcone-get-edge-server-domain.png)
 
 图中蓝色框提示的就是CloudCone CDN的边沿服务器的域名，这个域名对每个CloudCone用户是独一无二的．那么我们在CloudFlare DNS添加了这样一条CNAME记录，
 
-![figure](/cdn-deployment/add-cname-to-cdn-edge-server-in-cloudflare.png)
+![figure](figures/add-cname-to-cdn-edge-server-in-cloudflare.png)
 
 像图中描述的这样就OK了，注意把小云朵☁️图标点灰，然后点击Save按钮保存．快的话可能几分钟DNS缓存就会被传播到全网的DNS服务器并生效，如果慢的话可能要等几个小时使DNS新纪录生效，不时地打开一下自己的博客网站看一下就知道了.
 
 可以不时地看一下HTTP响应头，比如我的
 
-![figure](/cdn-deployment/cloudcone-cdn-all-set.png)
+![figure](figures/cloudcone-cdn-all-set.png)
 
 这样就算是生效了：可以看到其中有
 

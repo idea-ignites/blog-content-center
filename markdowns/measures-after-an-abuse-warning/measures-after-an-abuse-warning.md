@@ -13,7 +13,7 @@ author: "Wayne"
 
 在北京时间 3 月 12 日晚上 11 点 19 分，我打开电脑，并且收到一封发自 CloudCone 的 Abuse Report 邮件：
 
-![figure](/measures-after-an-abuse-warning/1.png)
+![figure](figures/1.png)
 
 这封邮件实际上是 06:51:52 +0100 发出的，也就是相当于北京时间的下午 1 点 51 分．内容大致是我的主机正在对它们网络中的主机进行 SSH 爆破，也就是短时间内尝试大量不同的用户名和密码组合以试图登录 (brute-force) ．它们 Profihost 首先是将滥用举报邮件发给 Multacom ，Multacome 也就是 CloudCone 背后的母公司，然后 CloudCone 将邮件转发给我，希望我快速做出回复．
 
@@ -21,7 +21,7 @@ author: "Wayne"
 
 由于我的这台主机也是才刚重做系统不久，并且上面也没有什么重要文件，于是我又再次重做了系统：
 
-![figure](/measures-after-an-abuse-warning/2.png)
+![figure](figures/2.png)
 
 完成后又进行关机操作，因为还可能有什么漏洞没有修补．由于我在 CloudCone 有两台 VPS ，并且这台 VPS 有 SSH 私钥可以登录到另外一台，意味着另外一台也可能也被入侵了，于是我将另外一台先关机（但没有重做系统，因为上面还有很多文件）．
 
@@ -29,7 +29,7 @@ author: "Wayne"
 
 现在主机 A 已经完成了重装并且是处在关机状态，于是我以恢复模式 (Recovery Mode) 去启动主机 A：
 
-![figure](/measures-after-an-abuse-warning/3.png)
+![figure](figures/3.png)
 
 不得不说 CloudCone 提供的这个功能非常实用．恢复模式相当于用一个提前预备好的临时启动盘去启动一台电脑，它启动的不是电脑硬盘上已经安装了的那个操作系统，所以恢复模式下启动大概率是安全的，更形象一点说，有点类似于以前安装 Windows 操作系统，用到的那种 PE 启动盘．
 
@@ -103,7 +103,7 @@ AllowUsers root
 
 由于已经确定好了 SSH 端口，所以可以设置防火墙白名单：
 
-![figure](/measures-after-an-abuse-warning/4.png)
+![figure](figures/4.png)
 
 默认策略为: Drop, 允许进入的端口为上面设定的 SSH 监听端口．
 
@@ -166,7 +166,7 @@ tail -F /var/log/auth.log
 
 由于主机 A 还要提供 HTTP 服务，所以开放了面向 [Cloudflare](https://www.cloudflare.com/ips/) 的白名单，放行所有来自 Cloudflare 的目标端口为 443 的流量：
 
-![figure](/measures-after-an-abuse-warning/5.png)
+![figure](figures/5.png)
 
 仅当要申请 TLS 证书 (Let's Encrypt 证书) 时，才手动开放 80 端口．
 

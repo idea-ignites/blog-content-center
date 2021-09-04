@@ -37,7 +37,7 @@ Markdown 不能方便地自动编号，交叉引用等．
 
 可以让图片以 100% 的宽度显示：
 
-![第 2 张图片](/writing-in-markdown/2.png)
+![第 2 张图片](figures/2.png)
 
 ## 显示代码的效果如何呢？
 
@@ -125,7 +125,7 @@ f(a) = \frac{1}{2 \pi i}
 
 另外，以下是截图：
 
-![第 3 张图片](/writing-in-markdown/3.png)
+![第 3 张图片](figures/3.png)
 
 可以看到右键点击数学公式是可以出现菜单的，MathJax 真的很强啊！
 
@@ -153,7 +153,7 @@ window.MathJax = { tex: { tags: 'ams' } };
 
 Front-Matter 在静态网站生成器的语境中主要指文章的元数据(metadata)例如：标题、摘要、时间、标签、分类和作者信息等，我主要是将 Front-Matter 嵌入在 Markdown 中，并在 Markdown 内容被解析 (parse) 前用正则表达式将其分离：
 
-![TOML格式的 Front-Matter](/writing-in-markdown/4.png)
+![TOML格式的 Front-Matter](figures/4.png)
 
 如图是 Toml 格式的 Front-Matter，正则表达式的代码：
 

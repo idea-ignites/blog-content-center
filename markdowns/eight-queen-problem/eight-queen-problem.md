@@ -15,7 +15,7 @@ categories: ["数学应用"]
 
 8皇后问题具体是在一个8乘8的国际象棋棋盘上放置8个皇后，使每个皇后都不能攻击对方，也就是说每一行只能有一个皇后，每一列只能有一个皇后，每条45度线或者135度线也只能有一个皇后.
 
-![figure](/eight-queen-problem/an-solution-to-eight-queens-problem.png)
+![figure](figures/an-solution-to-eight-queens-problem.png)
 
 对于如何求解8皇后问题，人们已经设计出了[许多专门的算法](https://en.wikipedia.org/wiki/Eight_queens_puzzle)，我们在这篇文章中会尝试用整数规划的方法求出8皇后问题的一个解，而后我们还会尝试用遗传算法来求解，最后我们会说一说8皇后问题和背包问题(Knapsack problem)的联系.
 
@@ -31,7 +31,7 @@ categories: ["数学应用"]
 
 但是，8个皇后的放置除了能用8元向量来表示，也能够用 \\( 8 \times 8=64 \\) 个变量 \\( x_{ij},i=1,\cdots ,8, j=1, \cdots, 8 \\) 组成的决策向量来表示，如下图
 
-![figure](/eight-queen-problem/eight-queen-problem-decision-variables.png)
+![figure](figuresfigures-decision-variables.png)
 
 如果 \\( x_{ij}=1 \\) ，那么就表示棋盘的第i行第j列放置了一个皇后，如果 \\( x_{ij}=0 \\) 则表示(i,j)这个位置没有放置皇．那么很显然前面的8元向量（注意前面的 \\( x \\) 不是这里的 \\( x \\) ）能表示的，这样一个64个二元变量组成的决策变量矩阵也能表．你可能注意到如果这里所有64个二元决策变量全取1那就会有64个皇后放置在棋盘上，因此我们还需要给这所有64个二元决策变量定义一些约束条件使其满足，例如首先要定义每一行不得放置两个或以上的皇后：
 
@@ -202,9 +202,9 @@ Export["~/Desktop/matrixAeq.csv", matrixAeq];
 Export["~/Desktop/matrixA.csv", matrixA];
 ```
 
-![figure](/eight-queen-problem/matrix-aeq-preview.png)
+![figure](figures/matrix-aeq-preview.png)
 
-![figure](/eight-queen-problem/matrix-a-preview.png)
+![figure](figures/matrix-a-preview.png)
 
 得到系数矩阵之后，我们尝试借助MATLAB求解整数规划问题，代码是这样的
 
@@ -237,7 +237,7 @@ answer
 
 输出结果是这样的：
 
-![figure](/eight-queen-problem/an-matlab-eight-queens-solution.png)
+![figure](figures/an-matlab-eight-queens-solution.png)
 
 这个解算出来其实也非常快，大概也就是一两秒钟这样．可以看到每一行只有一个1，每一列只有一个1，每一条对角线也只有一个1.
 
@@ -572,11 +572,11 @@ population // Length
 
 即使一开始作为输入的初始种群的表现是非常差劲的，得益于遗传算法强大的自我净化功能，在经过次数不多的自我演化之后，系统会自动淘汰掉种群中表现型差的个体，同时变异会带来新的基因型也就是新的表现型，于是系统中的种群的表现最终会越来越好，世界毕竟是一直向前发展的.
 
-![figure](/eight-queen-problem/initial-ga-solution.png)
+![figure](figures/initial-ga-solution.png)
 
 我们可以看到一开始的不适应度甚至达到了5位数，并且甚至同一列内还有许多重复的.
 
-![figure](/eight-queen-problem/latest-ga-solution.png)
+![figure](figures/latest-ga-solution.png)
 
 而经过次数不多的迭代了之后，可以看到，棋盘中可以相互攻击的皇后越来越少，也几乎没有同一行或者同一列内出现多个皇后的情况了，初始输入再差也会被遗传算法净化和优化.
 
@@ -590,25 +590,25 @@ population // Length
 
 这个时候呢，我们将脱离束手束脚的Mathematica，去Python的新天地实现这个最小冲突算法，因为Mathematica主要是适用于函数式的计算，而Python适用于过程式的计．在此之前，我们还需从染色体中提取出表现型，具体怎么做呢，还是用Mathematica.
 
-![figure](/eight-queen-problem/copy-solution-from-mathematica.png)
+![figure](figures/copy-solution-from-mathematica.png)
 
 如上图，我们直接复制那个最佳的表现型，然后把它转化为坐标数字，这一列坐标的每一个数字表示每一行的皇后所处的位置，或者也可以看做是每一列的皇后所处的位置，是一样的.
 
-![figure](/eight-queen-problem/calculate-8-queens-conflicts-in-python.png)
+![figure](figures/calculate-8-queens-conflicts-in-python.png)
 
 我们把Mathematica实现的遗传算法给出的最佳表现型复制到Python的一个执行环境中，然后我们计算出8个皇后的坐标，两两比较两个皇后，看是否冲突，我感觉还是Python的这种编程方式更加符合计算思维，而Mathematica的更加偏向数学思维，得到的那个conflictsMatrix的第i行第j列如果值是1就表示第j个皇后能够攻击到第j个皇后，请忽略conflictsMatrix的对角线的．例如，我们看到，第一个皇后是可以攻击第3个皇后的，是真的吗？因为第1个皇后的坐标的(1,6)，而第3个皇后的坐标是(3,8)，可以看到这两个坐标是处在同一条对角线上的，所以这两个皇后是可以互相攻击的，并且第2个皇后还可以攻击第4个皇后，第2个皇后的坐标是(2,3)，而第4个皇后的坐标是(4,1)，可以看到这两个坐标也是在同一条对角线上的，所以我们计算出的冲突矩阵是没错的.
 
 接下来，我们只需对每一行求和，就可以知道每一个皇后和多少个皇后冲突了，计算起来也非常简单
 
-![figure](/eight-queen-problem/python-compute-queens-conflicts-counts.png)
+![figure](figures/python-compute-queens-conflicts-counts.png)
 
 然后我们要找出冲突数最多的那个皇后
 
-![figure](/eight-queen-problem/find-that-queen-who-has-lagest-conflicts.png)
+![figure](figures/find-that-queen-who-has-lagest-conflicts.png)
 
 如果`unset=True`则意味着算法可以停．`maxIndex=2`意味着第`2+1`个皇后也就是第3个皇后需要调整位置使冲突数减小
 
-![figure](/eight-queen-problem/python-adjust-queen-position.png)
+![figure](figures/python-adjust-queen-position.png)
 
 分别尝试1到8这8个新位置，移动这个要调整的皇后，可以看到第3个皇后被移动到了第8．接下来再寻找冲突数最多的皇后，再移动，这样一种重．总结起来呢，我们的Python代码是这样的，以下是定义部分
 

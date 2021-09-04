@@ -15,7 +15,7 @@ categories: ["为了好玩"]
 
 现实中的魔方内部有六个转轴，这六个转轴连接到一个共同的中心，并且还连接着6个中心块，6个中心块夹着边块，而边块和边块夹着角．在转动的时候，中心块转动，同时边块也因为被中心块夹着也跟着转动，同时角块被边块夹着也跟着转动，但是不管怎么转动中心块都只能留在中心块的位置，中心块不会跑到边块或者角块的位置去，同理，边块也只是在边块的位置不会跑到角块的位置．
 
-![figure](/implementing-a-rubkis-cube-in-mathematica/rubiks/colored-blocks.png)
+![figure](figures/rubiks/colored-blocks.png)
 
 图中蓝色的表示中心块，淡黄色表示边块，粉色表示角块.
 
@@ -23,21 +23,21 @@ categories: ["为了好玩"]
 
 下图是一个有序魔方
 
-![figure](/implementing-a-rubkis-cube-in-mathematica/rubiks/ordered.png)
+![figure](figures/rubiks/ordered.png)
 
 下图是一个打乱后的魔方
 
-![figure](/implementing-a-rubkis-cube-in-mathematica/rubiks/shuffled.png)
+![figure](figures/rubiks/shuffled.png)
 
 ## 建模并实现魔方
 
-我们一开始先不直接进入理论部分，我们先在Mathematica中实现一个魔方，这里的「实现」是指：我们希望魔方能够像Mathematica中一般的图形表达式那样可以被「操控」可以在Mathematica中转这个魔方，类似在现实中转这个魔方，我们只不过是想再电脑上模拟现实中的魔方．[这里](/implementing-a-rubkis-cube-in-mathematica/rubiks/demonstration.mp4)是一个演示．
+我们一开始先不直接进入理论部分，我们先在Mathematica中实现一个魔方，这里的「实现」是指：我们希望魔方能够像Mathematica中一般的图形表达式那样可以被「操控」可以在Mathematica中转这个魔方，类似在现实中转这个魔方，我们只不过是想再电脑上模拟现实中的魔方．[这里](figures/rubiks/demonstration.mp4)是一个演示．
 
 可以看到效果还是很不错的，我们可以旋转整个魔方，也可以单独旋转其中某个面，可以顺时针方向也可以逆时针方向旋转其中某个面，基本上实现了现实中的魔方的基本功能，下面我们开始讲这个实现过程.
 
 首先呢，我们要挑选颜色，我们觉得现实中的这个魔方的颜色太丑了，在电脑里面就更加自由一些——我们可以按照自己的喜好为魔方的每个面甚至每一个小面单独挑选颜色，很有意思吧？程序员用代码在创造自己的宇．我们先用PhotoShop做一个稿子
 
-![figure](/implementing-a-rubkis-cube-in-mathematica/design-color-in-photoshop.png)
+![figure](figures/design-color-in-photoshop.png)
 
 然后我们把这6最后颜色分配到54个面（魔方有6个面，每个面有9个小面，6*9=54）
 
@@ -128,7 +128,7 @@ basePolygonCoords = Association[{
 
 这段代码呢引用的是一个单位正方体，这个单位正方体是这样的
 
-![figure](/implementing-a-rubkis-cube-in-mathematica/rubiks/base-cuboid.png)
+![figure](figures/rubiks/base-cuboid.png)
 
 画得不是特别好你们理解我的意思就行，然后我们把魔方分成六个面，正面frontSide就是正对着咱们的面，背面backSide就是我们看不到的被挡住了那个面，左面leftSide就是左手边的那个面，右面rightSide就是右手边的那个面，顶面topSide就是指向天空的那个面，底面bottomSide就是指向地球的核心的那个面，随后我们会：
 
@@ -380,7 +380,7 @@ backSidePolygons = Table[
 
 如果一切正常，输出结果应该如下图
 
-![figure](/implementing-a-rubkis-cube-in-mathematica/rubiks/separate-facades.png)
+![figure](figures/rubiks/separate-facades.png)
 
 可以看到魔方的基本组件我们已经分别造好啦，下边呢，要把魔方组装起来：
 
@@ -401,7 +401,7 @@ Graphics3D[
 
 看起来就是这样子的：
 
-![figure](/implementing-a-rubkis-cube-in-mathematica/rubiks/assembled.png)
+![figure](figures/rubiks/assembled.png)
 
 如果你也安装有Mathematica你可以一路跟着我们的代码做，现在已经可以整体旋转这个魔方以分别观看魔方的6个面了，但是还不能单独地去「旋转」魔方的每个面.
 
@@ -409,7 +409,7 @@ Graphics3D[
 
 我们把魔方的每个小面都标上数字：
 
-![figure](/implementing-a-rubkis-cube-in-mathematica/rubiks/labled-rubiks-cube.png)
+![figure](figures/rubiks/labled-rubiks-cube.png)
 
 如果你现在也有一个魔方，如果你也像我一样在魔方的小面上标上数字，容易验证，魔方的右面顺时针旋转90度之后，会有下列置换关系发生：
 
@@ -762,7 +762,7 @@ DynamicModule[
 ]
 ```
 
-然后就实现了魔方的[效果](/implementing-a-rubkis-cube-in-mathematica/rubiks/demonstration.mp4)，而至于一开始的那个天文数字是怎么计算出来的呢？
+然后就实现了魔方的[效果](figures/rubiks/demonstration.mp4)，而至于一开始的那个天文数字是怎么计算出来的呢？
 
 ```
 rubkisGroup = PermutationGroup[{r90, l90, t90, d90, f90, b90}];
@@ -771,4 +771,4 @@ GroupOrder[rubkisGroup]
 
 6个基本的置换加上一个恒等置换能够构造出一个「魔方群」，旋转操作和多次旋转操作无非就是置换和置换的复合（也就是乘法），魔方群中有多少个元素，魔方就有多少种状态．
 
-![figure](/implementing-a-rubkis-cube-in-mathematica/rubiks/misc-rubiks-cube.png)
+![figure](figures/rubiks/misc-rubiks-cube.png)

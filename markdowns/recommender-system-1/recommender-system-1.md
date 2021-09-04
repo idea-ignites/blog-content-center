@@ -42,7 +42,7 @@ ratings
 
 输出：
 
-![figure](/recommender-system-1/1.png)
+![figure](figures/1.png)
 
 可看到：第一列 `userId` 是用户编号，是从 1 开始数的，第二列 `movieId` 是电影编号，第三列 `rating` 则是电影评分，每一行对应用户的一次打分操作．
 
@@ -63,7 +63,7 @@ rating_matrix = csr_matrix(coo_matrix((rating, (userId, movieId))))
 
 查看它：
 
-![figure](/recommender-system-1/2.png)
+![figure](figures/2.png)
 
 出现了问题：明明只有 9762 步电影，哪里来的 193609 这么多列？答曰：用户只有 610 名，其中有些电影没有得到任何一个用户的打分，所以体现为打分矩阵上全为空的列．
 
@@ -77,7 +77,7 @@ inner_prods = rating_matrix @ (rating_matrix.T)
 
 查看 `inner_prods`:
 
-![figure](/recommender-system-1/3.png)
+![figure](figures/3.png)
 
 我们知道，一个向量自身与自身的内积等于模长的平方，所以 `inner_prods` 的对角元素就是每个用户的模长：
 
@@ -99,7 +99,7 @@ cosine_similarities = inner_prods / norm_prods
 
 查看它：
 
-![figure](/recommender-system-1/4.png)
+![figure](figures/4.png)
 
 对角线的元素全为 1, 初步来说是正确的．
 
@@ -111,7 +111,7 @@ ind = np.argsort(-cosine_similarities, axis=1)[:, 0:21]
 
 查看与每个用户最相似的 20 个用户的编号：
 
-![figure](/recommender-system-1/5.png)
+![figure](figures/5.png)
 
 这样我们就实现了 User-based CF 的第一步．
 

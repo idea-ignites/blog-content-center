@@ -155,7 +155,7 @@ run_cross_validation(data, training_suite)
 
 输出为：
 
-![figure](/recommender-system-3/1.png)
+![figure](figures/1.png)
 
 还记得在[上一节](https://exploro.one/posts/recommender-system-2)我们的模型取得的 RMSE 大约是 1.13, 平均来说效果劣化了．
 

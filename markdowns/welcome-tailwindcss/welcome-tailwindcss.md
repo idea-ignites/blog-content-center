@@ -55,7 +55,7 @@ author: "Wayne"
 
 对于一些简单的情形，我们可以不用写一行 CSS 代码，仅仅在 `className` 字段中写 `tailwindcss` 类名，就能实现想要的效果．
 
-![figure](/welcome-tailwindcss/1.png)
+![figure](figures/1.png)
 
 图中显示的：`flex`, `bg-gray-100`, `rounded-xl` 都是原先 CSS 代码的浓缩，一个这样的 `tailwindcss` 类一般对应原来的一行或者多行原生 CSS.
 
@@ -65,9 +65,9 @@ author: "Wayne"
 
 要开始使用 tailwindcss, 实际上我们仅仅需要记做每一类类大致的名称，例如：`text-*` 是用来调整字体的大小和颜色的，或者更应该认为 `text-*` 包含了常用的字体风格组合：
 
-![figure](/welcome-tailwindcss/2.png)
+![figure](figures/2.png)
 
-![figure](/welcome-tailwindcss/3.png)
+![figure](figures/3.png)
 
 而 `h-*` 用来选择高度设置组合，`w-*` 用来选择宽度设置组合，`m-*`, `mb-*`, `mt-*` 分别用来选择 `margin` 效果，`margin-bottom` 效果和 `margin-top` 效果，这些都很好记住．
 
@@ -77,15 +77,15 @@ author: "Wayne"
 
 探索子博客网站的首页：
 
-![figure](/welcome-tailwindcss/4.png)
+![figure](figures/4.png)
 
-![figure](/welcome-tailwindcss/5.png)
+![figure](figures/5.png)
 
 通过应用 tailwindcss 已经获得了更好的 Responsive 效果，如今在 iPhone 屏幕上显示效果变得比以前更好了．
 
 评论区页面也是依靠 tailwindcss 才快速地做出来：
 
-![figure](/welcome-tailwindcss/6.png)
+![figure](figures/6.png)
 
 并且在移动设备上也有较为自然的显示效果．
 
@@ -151,7 +151,7 @@ unified 提供了一个统一的结构式文本 (structured text) 解析 (parsin
 
 从 [remarkjs](https://remark.js.org/) 的角度看，一份 Markdown 文本可以被解析成一个结构分明的抽象语法树 ([AST](https://astexplorer.net/#/gist/0a92bbf654aca4fdfb3f139254cf0bad/ffe102014c188434c027e43661dbe6ec30042ee2)):
 
-![figure](/welcome-tailwindcss/7.png)
+![figure](figures/7.png)
 
 建出了这个树，相当于程序「理解」了 Markdown 文本的「结构」，而非仅仅是机械式地将一种文本 (Markdown) 转换为另外一种文本 (HTML)．
 
@@ -163,12 +163,12 @@ class Heading1 extends React.Component { ... }
 
 实际上：
 
-![figure](/welcome-tailwindcss/8.png)
+![figure](figures/8.png)
 
 如上图所示，我们最终可以从 Markdown 中解析出一系列的 ReactElement 对象，并且自己来实现这些 ReactElement 对象的类．
 
 比如说，`Heading1` 的实现：
 
-![figure](/welcome-tailwindcss/9.png)
+![figure](figures/9.png)
 
 我们就是通过这种方式，将 tailwindcss 应用在产生自 Markdown 的网页中的．

@@ -19,8 +19,8 @@ tags: ["git"]
 blob 即文件的意思，我们首先创建一个临时文件夹，并且将它初始化为一个空的 git 仓库来作为我们接下来的实验场所：
 
 ```
-mkdir -p test/git-demonstration/git-internals
-cd test/git-demonstration/git-internals
+mkdir -p test/git-demonstrationfigures
+cd test/git-demonstrationfigures
 git init
 ```
 
@@ -276,7 +276,7 @@ First commit
 
 这就清楚了：
 
-![figure](/git-internals/first-commit.png)
+![figure](figures/first-commit.png)
 
 接下来我们再接再厉，再建立第二个提交，并且该提交指向第一个提交，我相信这应该不难做到．
 
@@ -488,7 +488,7 @@ git cat-file -p cc30d8487c54051c41dcc231461b3b59cffdcb8c
 
 这下我们就清楚了：
 
-![figure](/git-internals/second-commit.png)
+![figure](figures/second-commit.png)
 
 ## 一个有趣的问题
 
@@ -545,7 +545,7 @@ git cat-file -p b6eaa
 
 画出来就是：
 
-![figure](/git-internals/third-commit.png)
+![figure](figures/third-commit.png)
 
 由此我们看出来，修改后的 a.txt 被放到了一个新的 blob 里面去了．
 
