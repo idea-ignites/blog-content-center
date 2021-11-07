@@ -14,7 +14,7 @@ const markdownsPath = resolve('src/data/markdowns');
 
 readdir(markdownsPath, { withFileTypes: true }).then((entries) => {
   for (const entry of entries) {
-    if (entry instanceof Dirent) {
+    if (entry instanceof Dirent && entry.isDirectory()) {
       const entryName = entry.name;
       const markdownFileName = entryName + '.md';
       const fullMarkdownPath = resolve(

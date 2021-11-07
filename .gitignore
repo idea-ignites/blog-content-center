@@ -6,6 +6,8 @@ scripts/node_modules
 src/data/**/*.frontmatter.json
 src/data/**/*.syntaxtree.json
 
+scripts/*.js
+
 # Logs
 logs
 *.log
