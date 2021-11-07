@@ -1,10 +1,12 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { MarkdownController } from './markdown/markdown.controller';
+import { PdfController } from './pdf/pdf.controller';
+import { ArticleController } from './article/article.controller';
+import { ArticleService } from './article/article.service';
+import { PdfService } from './pdf/pdf.service';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [MarkdownController, PdfController, ArticleController],
+  providers: [ArticleService, PdfService],
 })
 export class AppModule {}
