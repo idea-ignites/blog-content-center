@@ -1,6 +1,7 @@
-import { readdir } from 'fs/promises';
+import { readdir, writeFile } from 'fs/promises';
 import { resolve } from 'path';
 import { Dirent } from 'fs';
+import { v4 as uuidv4 } from 'uuid';
 
 type EntryType =
   | 'file'
@@ -15,48 +16,57 @@ type EntryType =
 type AnnotatedEntry = {
   entry: Dirent;
   type: EntryType;
-  fullPath: string;
+  relativePathSegments: string[];
 };
 
-// type PathSegment = string;
-// type PathSegments = Array<PathSegment>;
-// type NavigationHistory = Array<PathSegments>;
+export class FileNameIndex {
+  private _fileNameToId!: Record<string, string>;
+  private _idToFileName!: Record<string, string>;
 
-// class DirectoryExploreContext {
-//   public readonly root!: PathSegment;
-//   private _currentLocation!: PathSegments;
-//   private _navigationHistory!: NavigationHistory;
+  constructor(
+    _fileNameToId?: Record<string, string>,
+    _idToFileName?: Record<string, string>,
+  ) {
+    this._fileNameToId = {};
+    this._idToFileName = {};
 
-//   public get currentLocation(): PathSegments {
-//     return this._currentLocation;
-//   }
+    if (_fileNameToId) {
+      this._fileNameToId = _fileNameToId;
+    }
 
-//   public get history(): NavigationHistory {
-//     return this._navigationHistory;
-//   }
+    if (_idToFileName) {
+      this._idToFileName = _idToFileName;
+    }
+  }
 
-//   constructor(root: PathSegment) {
-//     this.root = root;
-//     this._currentLocation = [root];
-//     this._navigationHistory = new Array<PathSegments>();
-//   }
+  public add(path: string, id: string): void {
+    this._fileNameToId[path] = id;
+    this._addReverse(id, path);
+  }
 
-//   public enter(pathSegment: PathSegment): void {
-//     console.log({ enter: pathSegment });
-//     this._navigationHistory.push(this._currentLocation);
-//     this._currentLocation = [...this._currentLocation, pathSegment];
-//   }
+  private _addReverse(id: string, path: string) {
+    this._idToFileName[id] = path;
+  }
 
-//   public leave(): void {
-//     console.log({ leave: this._currentLocation });
-//     if (this._navigationHistory.length) {
-//       this._currentLocation = this._navigationHistory.pop() as PathSegments;
-//       return;
-//     }
+  public toJson(): string {
+    const _fileNameToId = this._fileNameToId;
+    const _idToFileName = this._idToFileName;
+    const json = JSON.stringify({ _fileNameToId, _idToFileName });
+    return json;
+  }
 
-//     throw new RangeError();
-//   }
-// }
+  public static fromJson(json: string): FileNameIndex {
+    const data = JSON.parse(json);
+    const requireFields = ['_fileNameToId', '_idToFileName'];
+    for (const field of requireFields) {
+      if (!data[field]) {
+        throw new Error();
+      }
+    }
+
+    return new FileNameIndex(...(data as any));
+  }
+}
 
 function getEntryType(entry: Dirent): EntryType {
   if (entry.isBlockDevice()) {
@@ -78,7 +88,9 @@ function getEntryType(entry: Dirent): EntryType {
   }
 }
 
-const markdownsPath = resolve('src/data/markdowns');
+const markdownPathName = 'markdowns';
+const dataPath = 'src/data';
+const markdownsPath = resolve(dataPath, markdownPathName);
 
 async function main() {
   const subEntries = await readdir(markdownsPath, { withFileTypes: true });
@@ -88,35 +100,46 @@ async function main() {
     const annotatedEntry: AnnotatedEntry = {
       entry: entry,
       type: getEntryType(entry),
-      fullPath: resolve(markdownsPath, entry.name),
+      relativePathSegments: [entry.name],
     };
     unTraversedEntries.push(annotatedEntry);
   }
+
+  const fileNameIndex = new FileNameIndex();
 
   while (unTraversedEntries.length) {
     const ent = unTraversedEntries.pop() as AnnotatedEntry;
 
     if (ent.entry.isDirectory()) {
-      console.log(`${ent.fullPath} is directory`);
+      // console.log(`${ent.fullPath} is directory`);
 
-      const subEntries = await readdir(ent.fullPath, {
-        withFileTypes: true,
-      });
+      const fullPathSegments = [markdownsPath, ...ent.relativePathSegments];
+      const fullPath = resolve(...fullPathSegments);
+      const subEntries = await readdir(fullPath, { withFileTypes: true });
 
       while (subEntries.length) {
         const subEnt = subEntries.pop() as Dirent;
         unTraversedEntries.push({
           entry: subEnt,
           type: getEntryType(subEnt),
-          fullPath: resolve(ent.fullPath, subEnt.name),
+          relativePathSegments: [...ent.relativePathSegments, subEnt.name],
         });
       }
     }
 
     if (ent.entry.isFile()) {
-      console.log(`${ent.fullPath} is file`);
+      const path = ent.relativePathSegments.join('/');
+      const id = uuidv4();
+      fileNameIndex.add(path, id);
     }
   }
+
+  const markdownDataIndexPath = resolve(
+    dataPath,
+    markdownPathName + '.index.json',
+  );
+  const markdownDataIndex = fileNameIndex.toJson();
+  await writeFile(markdownDataIndexPath, markdownDataIndex);
 }
 
 main();
