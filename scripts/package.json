@@ -19,6 +19,8 @@
     "vfile": "^5.2.0"
   },
   "devDependencies": {
+    "@types/mdast": "^3.0.10",
+    "@types/unist": "^2.0.6",
     "@types/uuid": "^8.3.1"
   }
 }
