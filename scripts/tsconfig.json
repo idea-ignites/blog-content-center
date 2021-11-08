@@ -68,7 +68,9 @@
     "skipLibCheck": true,                           /* Skip type checking of declaration files. */
     "forceConsistentCasingInFileNames": true,        /* Disallow inconsistently-cased references to the same file. */
     "outDir": ".",
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "allowJs": true,
+    "resolveJsonModule": true,
   },
   "include": [
     "./*.ts"

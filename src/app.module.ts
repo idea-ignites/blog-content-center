@@ -7,6 +7,8 @@ import { MarkdownService } from './markdown/markdown.service';
 import { CardController } from './card/card.controller';
 import { CardService } from './card/card.service';
 import { ArticleService } from './article/article.service';
+import { ResourceController } from './resource/resource.controller';
+import { ResourceService } from './resource/resource.service';
 
 @Module({
   controllers: [
@@ -14,7 +16,14 @@ import { ArticleService } from './article/article.service';
     PdfController,
     ArticleController,
     CardController,
+    ResourceController,
   ],
-  providers: [ArticleService, PdfService, MarkdownService, CardService],
+  providers: [
+    ArticleService,
+    PdfService,
+    MarkdownService,
+    CardService,
+    ResourceService,
+  ],
 })
 export class AppModule {}
