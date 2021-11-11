@@ -11,7 +11,6 @@ RUN npm install --global typescript
 RUN cd scripts && tsc
 RUN [ "node", "scripts/traverse-markdown-resources.js" ]
 RUN [ "node", "scripts/pre-compile.js" ]
-COPY [ "src/data", "./src/data" ]
 
 RUN [ "npm", "install" ]
 RUN [ "npm", "run", "build" ]
